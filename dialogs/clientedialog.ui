@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ClienteDialog</class>
+ <widget class="QDialog" name="ClienteDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>380</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Registro de Cliente</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+QDialog {
+    background-color: #f5f5f5;
+}
+
+QLabel {
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QLabel#titleLabel {
+    color: #ea6f15;
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+QLineEdit {
+    background-color: #ffffff;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #333333;
+    font-size: 13px;
+    min-height: 20px;
+}
+
+QLineEdit:focus {
+    border: 2px solid #ea6f15;
+    background-color: #fffaf5;
+}
+
+QLineEdit::placeholder {
+    color: #999999;
+}
+
+QPushButton {
+    background-color: #ea6f15;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: bold;
+    min-width: 120px;
+}
+
+QPushButton:hover {
+    background-color: #f58025;
+}
+
+QPushButton#btnCancelar {
+    background-color: #888888;
+    color: #ffffff;
+}
+
+QPushButton#btnCancelar:hover {
+    background-color: #999999;
+}
+   </string>
+  </property>
+  <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>16</number>
+   </property>
+   <property name="margin">
+    <number>24</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="titleLabel">
+     <property name="text">
+      <string>DATOS DEL CLIENTE</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout">
+     <property name="labelAlignment">
+      <set>Qt::AlignRight|Qt::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>16</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>12</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>RUT:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="editRut">
+       <property name="placeholderText">
+        <string>Ej: 12.345.678-9</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Nombre:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="editNombre">
+       <property name="placeholderText">
+        <string>Nombre del cliente</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Apellido:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="editApellido">
+       <property name="placeholderText">
+        <string>Apellido del cliente</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Teléfono:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="editTelefono">
+       <property name="placeholderText">
+        <string>+56 9 1234 5678</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Dirección:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="editDireccion">
+       <property name="placeholderText">
+        <string>Dirección completa</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>12</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancelar">
+       <property name="text">
+        <string>CANCELAR</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAceptar">
+       <property name="text">
+        <string>GUARDAR</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

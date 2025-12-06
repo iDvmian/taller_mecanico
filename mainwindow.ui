@@ -1,0 +1,1093 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1400</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Taller Mecánico - Sistema de Gestión</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+/* =============================================
+   TEMA CLARO - TALLER MECÁNICO
+   ============================================= */
+
+* {
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+QMainWindow {
+    background-color: #f5f5f5;
+}
+
+/* TÍTULO PRINCIPAL */
+QLabel#titleLabel {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ea6f15;
+    padding: 5px 0;
+}
+
+QLabel#subtitleLabel {
+    font-size: 12px;
+    color: #666666;
+    padding-bottom: 5px;
+}
+
+/* =============================================
+   PESTAÑAS
+   ============================================= */
+QTabWidget::pane {
+    border: 1px solid #d0d0d0;
+    background-color: #ffffff;
+    border-radius: 6px;
+    margin-top: -1px;
+}
+
+QTabBar::tab {
+    background-color: #e8e8e8;
+    color: #555555;
+    padding: 10px 22px;
+    margin-right: 2px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 90px;
+}
+
+QTabBar::tab:selected {
+    background-color: #ea6f15;
+    color: #ffffff;
+}
+
+QTabBar::tab:hover:!selected {
+    background-color: #d0d0d0;
+}
+
+/* =============================================
+   TABLAS
+   ============================================= */
+QTableWidget {
+    background-color: #ffffff;
+    alternate-background-color: #fafafa;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    gridline-color: #e8e8e8;
+    color: #333333;
+    font-size: 13px;
+    selection-background-color: #ea6f15;
+    selection-color: #ffffff;
+}
+
+QTableWidget::item {
+    padding: 8px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+QTableWidget::item:selected {
+    background-color: #ea6f15;
+    color: #ffffff;
+}
+
+QTableWidget::item:hover {
+    background-color: #f0f0f0;
+}
+
+QHeaderView::section {
+    background-color: #f8f8f8;
+    color: #ea6f15;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 2px solid #ea6f15;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* =============================================
+   BOTONES PRINCIPALES
+   ============================================= */
+QPushButton {
+    background-color: #ea6f15;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: bold;
+    min-width: 100px;
+}
+
+QPushButton:hover {
+    background-color: #f58025;
+}
+
+QPushButton:pressed {
+    background-color: #d56010;
+}
+
+QPushButton:disabled {
+    background-color: #cccccc;
+    color: #888888;
+}
+
+/* Botones de Editar */
+QPushButton#btnEditarCliente,
+QPushButton#btnEditarOrden,
+QPushButton#btnEditarRepuesto,
+QPushButton#btnEditarCita {
+    background-color: #9a6140;
+    color: #ffffff;
+}
+
+QPushButton#btnEditarCliente:hover,
+QPushButton#btnEditarOrden:hover,
+QPushButton#btnEditarRepuesto:hover,
+QPushButton#btnEditarCita:hover {
+    background-color: #b07050;
+}
+
+/* Botones de Eliminar */
+QPushButton#btnEliminarCliente,
+QPushButton#btnEliminarVehiculo,
+QPushButton#btnEliminarRepuesto,
+QPushButton#btnEliminarCita {
+    background-color: #c44444;
+    color: #ffffff;
+}
+
+QPushButton#btnEliminarCliente:hover,
+QPushButton#btnEliminarVehiculo:hover,
+QPushButton#btnEliminarRepuesto:hover,
+QPushButton#btnEliminarCita:hover {
+    background-color: #d55555;
+}
+
+/* Botones Secundarios */
+QPushButton#btnHistorialCliente,
+QPushButton#btnHistorialVehiculo,
+QPushButton#btnCambiarEstado,
+QPushButton#btnAjustarStock {
+    background-color: #6c6c6c;
+    color: #ffffff;
+}
+
+QPushButton#btnHistorialCliente:hover,
+QPushButton#btnHistorialVehiculo:hover,
+QPushButton#btnCambiarEstado:hover,
+QPushButton#btnAjustarStock:hover {
+    background-color: #808080;
+}
+
+/* Botones Verdes */
+QPushButton#btnAgregarHibrido,
+QPushButton#btnRegistrarPago {
+    background-color: #4a9e4a;
+    color: #ffffff;
+}
+
+QPushButton#btnAgregarHibrido:hover,
+QPushButton#btnRegistrarPago:hover {
+    background-color: #5cb85c;
+}
+
+/* Botones Moto */
+QPushButton#btnAgregarMoto {
+    background-color: #ebb465;
+    color: #333333;
+}
+
+QPushButton#btnAgregarMoto:hover {
+    background-color: #f5c478;
+}
+
+/* =============================================
+   GRUPOS / PANELES
+   ============================================= */
+QGroupBox {
+    background-color: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    margin-top: 16px;
+    padding: 16px 12px 12px 12px;
+    font-weight: bold;
+    color: #ea6f15;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 16px;
+    padding: 0 8px;
+    background-color: #ffffff;
+    color: #ea6f15;
+    font-size: 14px;
+}
+
+/* =============================================
+   LABELS
+   ============================================= */
+QLabel {
+    color: #333333;
+    font-size: 13px;
+}
+
+/* =============================================
+   INPUTS
+   ============================================= */
+QLineEdit, QTextEdit, QSpinBox, QDoubleSpinBox, QComboBox, QDateEdit, QDateTimeEdit {
+    background-color: #ffffff;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    padding: 5px 10px;
+    color: #333333;
+    font-size: 13px;
+    min-height: 18px;
+}
+
+QLineEdit:focus, QTextEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QComboBox:focus, QDateEdit:focus, QDateTimeEdit:focus {
+    border: 2px solid #ea6f15;
+    background-color: #fffaf5;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 30px;
+}
+
+QComboBox::down-arrow {
+    image: none;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #ea6f15;
+    margin-right: 10px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    color: #333333;
+    selection-background-color: #ea6f15;
+    selection-color: #ffffff;
+    border: 1px solid #d0d0d0;
+}
+
+/* =============================================
+   SPLITTER
+   ============================================= */
+QSplitter::handle {
+    background-color: #d0d0d0;
+    width: 3px;
+}
+
+QSplitter::handle:hover {
+    background-color: #ea6f15;
+}
+
+/* =============================================
+   CALENDARIO
+   ============================================= */
+QCalendarWidget {
+    background-color: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+}
+
+QCalendarWidget QToolButton {
+    color: #ea6f15;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 6px;
+}
+
+QCalendarWidget QToolButton:hover {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+QCalendarWidget QMenu {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #d0d0d0;
+}
+
+QCalendarWidget QSpinBox {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+QCalendarWidget QWidget#qt_calendar_navigationbar {
+    background-color: #f8f8f8;
+    padding: 6px;
+}
+
+QCalendarWidget QAbstractItemView {
+    background-color: #ffffff;
+    color: #333333;
+    selection-background-color: #ea6f15;
+    selection-color: #ffffff;
+    font-size: 12px;
+}
+
+QCalendarWidget QAbstractItemView:disabled {
+    color: #aaaaaa;
+}
+
+/* =============================================
+   LISTA DE CITAS
+   ============================================= */
+QListWidget {
+    background-color: #ffffff;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    color: #333333;
+    font-size: 13px;
+    padding: 4px;
+}
+
+QListWidget::item {
+    padding: 10px 8px;
+    border-radius: 4px;
+    margin: 2px 0;
+    border-left: 4px solid #ea6f15;
+    background-color: #fafafa;
+}
+
+QListWidget::item:selected {
+    background-color: #ea6f15;
+    color: #ffffff;
+}
+
+QListWidget::item:hover:!selected {
+    background-color: #f0f0f0;
+}
+
+/* =============================================
+   SCROLLBAR
+   ============================================= */
+QScrollBar:vertical {
+    background-color: #f0f0f0;
+    width: 10px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #c0c0c0;
+    border-radius: 5px;
+    min-height: 30px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #ea6f15;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0;
+}
+
+QScrollBar:horizontal {
+    background-color: #f0f0f0;
+    height: 10px;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal {
+    background-color: #c0c0c0;
+    border-radius: 5px;
+    min-width: 30px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background-color: #ea6f15;
+}
+
+/* =============================================
+   BARRA DE ESTADO
+   ============================================= */
+QStatusBar {
+    background-color: #f8f8f8;
+    color: #666666;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-top: 2px solid #ea6f15;
+}
+
+/* =============================================
+   TOOLTIPS
+   ============================================= */
+QToolTip {
+    background-color: #ea6f15;
+    color: #ffffff;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* =============================================
+   MESSAGEBOX (Ventanas de mensaje)
+   ============================================= */
+QMessageBox {
+    background-color: #f5f5f5;
+}
+
+QMessageBox QLabel {
+    color: #333333;
+    font-size: 13px;
+}
+
+QMessageBox QPushButton {
+    background-color: #ea6f15;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 80px;
+}
+
+QMessageBox QPushButton:hover {
+    background-color: #f58025;
+}
+
+   </string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="mainLayout">
+    <property name="spacing">
+     <number>8</number>
+    </property>
+    <property name="leftMargin">
+     <number>16</number>
+    </property>
+    <property name="topMargin">
+     <number>12</number>
+    </property>
+    <property name="rightMargin">
+     <number>16</number>
+    </property>
+    <property name="bottomMargin">
+     <number>12</number>
+    </property>
+    
+    <!-- ENCABEZADO CON LOGO -->
+    <item>
+     <layout class="QHBoxLayout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <!-- LOGO -->
+      <item>
+       <widget class="QLabel" name="logoLabel">
+        <property name="minimumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <!-- TÍTULO Y SUBTÍTULO -->
+      <item>
+       <layout class="QVBoxLayout">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="titleLabel">
+          <property name="text">
+           <string>TALLER SAN JAUN</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="subtitleLabel">
+          <property name="text">
+           <string>Sistema de Gestión Integral - Clientes, Vehículos, Órdenes de Trabajo e Inventario</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
+    
+    <!-- CONTENIDO PRINCIPAL CON PESTAÑAS -->
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      
+      <!-- ================================================ -->
+      <!-- PESTAÑA 1: CLIENTES Y VEHÍCULOS -->
+      <!-- ================================================ -->
+      <widget class="QWidget" name="tabClientes">
+       <attribute name="title">
+        <string>CLIENTES</string>
+       </attribute>
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <property name="margin">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QSplitter" name="splitter">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          
+          <!-- Panel de Clientes -->
+          <widget class="QGroupBox" name="groupClientes">
+           <property name="title">
+            <string>REGISTRO DE CLIENTES</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QTableWidget" name="tablaClientes">
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="spacing">
+               <number>8</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="btnAgregarCliente">
+                <property name="text">
+                 <string>+ NUEVO CLIENTE</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnEditarCliente">
+                <property name="text">
+                 <string>EDITAR</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnHistorialCliente">
+                <property name="text">
+                 <string>HISTORIAL</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnEliminarCliente">
+                <property name="text">
+                 <string>ELIMINAR</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+          
+          <!-- Panel de Vehículos -->
+          <widget class="QGroupBox" name="groupVehiculos">
+           <property name="title">
+            <string>VEHÍCULOS DEL CLIENTE SELECCIONADO</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QTableWidget" name="tablaVehiculos">
+              <property name="alternatingRowColors">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout">
+              <property name="spacing">
+               <number>8</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="btnAgregarAuto">
+                <property name="text">
+                 <string>AGREGAR AUTO</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnAgregarMoto">
+                <property name="text">
+                 <string>AGREGAR MOTO</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnAgregarHibrido">
+                <property name="text">
+                 <string>HÍBRIDO</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnHistorialVehiculo">
+                <property name="text">
+                 <string>HISTORIAL</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnEliminarVehiculo">
+                <property name="text">
+                 <string>ELIMINAR</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      
+      <!-- ================================================ -->
+      <!-- PESTAÑA 2: ÓRDENES DE TRABAJO -->
+      <!-- ================================================ -->
+      <widget class="QWidget" name="tabOrdenes">
+       <attribute name="title">
+        <string>ÓRDENES DE TRABAJO</string>
+       </attribute>
+       <layout class="QVBoxLayout">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <property name="margin">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="groupOrdenes">
+          <property name="title">
+           <string>ÓRDENES DE TRABAJO ACTIVAS</string>
+          </property>
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QTableWidget" name="tablaOrdenes">
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <column>
+              <property name="text"><string>ID</string></property>
+             </column>
+             <column>
+              <property name="text"><string>N° ORDEN</string></property>
+             </column>
+             <column>
+              <property name="text"><string>ESTADO</string></property>
+             </column>
+             <column>
+              <property name="text"><string>FECHA INGRESO</string></property>
+             </column>
+             <column>
+              <property name="text"><string>COSTO ESTIMADO</string></property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btnNuevaOrden">
+               <property name="text">
+                <string>NUEVA ORDEN</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnEditarOrden">
+               <property name="text">
+                <string>EDITAR ORDEN</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnCambiarEstado">
+               <property name="text">
+                <string>CAMBIAR ESTADO</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      
+      <!-- ================================================ -->
+      <!-- PESTAÑA 3: INVENTARIO DE REPUESTOS -->
+      <!-- ================================================ -->
+      <widget class="QWidget" name="tabInventario">
+       <attribute name="title">
+        <string>INVENTARIO</string>
+       </attribute>
+       <layout class="QVBoxLayout">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <property name="margin">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="groupInventario">
+          <property name="title">
+           <string>INVENTARIO DE REPUESTOS Y PRODUCTOS</string>
+          </property>
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QTableWidget" name="tablaInventario">
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <column>
+              <property name="text"><string>ID</string></property>
+             </column>
+             <column>
+              <property name="text"><string>CÓDIGO</string></property>
+             </column>
+             <column>
+              <property name="text"><string>PRODUCTO</string></property>
+             </column>
+             <column>
+              <property name="text"><string>CATEGORÍA</string></property>
+             </column>
+             <column>
+              <property name="text"><string>STOCK</string></property>
+             </column>
+             <column>
+              <property name="text"><string>PRECIO</string></property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btnNuevoRepuesto">
+               <property name="text">
+                <string>+ AGREGAR PRODUCTO</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnEditarRepuesto">
+               <property name="text">
+                <string>EDITAR</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnAjustarStock">
+               <property name="text">
+                <string>AJUSTAR STOCK</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnEliminarRepuesto">
+               <property name="text">
+                <string>ELIMINAR</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      
+      <!-- ================================================ -->
+      <!-- PESTAÑA 4: AGENDA / CALENDARIO -->
+      <!-- ================================================ -->
+      <widget class="QWidget" name="tabAgenda">
+       <attribute name="title">
+        <string>AGENDA</string>
+       </attribute>
+       <layout class="QHBoxLayout">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <property name="margin">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="groupCalendario">
+          <property name="title">
+           <string>CALENDARIO DE CITAS</string>
+          </property>
+          <property name="minimumWidth">
+           <number>360</number>
+          </property>
+          <property name="maximumWidth">
+           <number>400</number>
+          </property>
+          <layout class="QVBoxLayout">
+           <item>
+            <widget class="QCalendarWidget" name="calendario">
+             <property name="gridVisible">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="groupCitas">
+          <property name="title">
+           <string>CITAS DEL DÍA SELECCIONADO</string>
+          </property>
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QListWidget" name="listaCitas"/>
+           </item>
+           <item>
+            <layout class="QHBoxLayout">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btnNuevaCita">
+               <property name="text">
+                <string>+ NUEVA CITA</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnEditarCita">
+               <property name="text">
+                <string>EDITAR</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnEliminarCita">
+               <property name="text">
+                <string>CANCELAR CITA</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      
+      <!-- ================================================ -->
+      <!-- PESTAÑA 5: FACTURACIÓN -->
+      <!-- ================================================ -->
+      <widget class="QWidget" name="tabFacturacion">
+       <attribute name="title">
+        <string>FACTURACIÓN</string>
+       </attribute>
+       <layout class="QVBoxLayout">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <property name="margin">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="groupFacturas">
+          <property name="title">
+           <string>FACTURAS Y DOCUMENTOS</string>
+          </property>
+          <layout class="QVBoxLayout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
+           <item>
+            <widget class="QTableWidget" name="tablaFacturas">
+             <property name="alternatingRowColors">
+              <bool>true</bool>
+             </property>
+             <column>
+              <property name="text"><string>ID</string></property>
+             </column>
+             <column>
+              <property name="text"><string>N° DOCUMENTO</string></property>
+             </column>
+             <column>
+              <property name="text"><string>FECHA</string></property>
+             </column>
+             <column>
+              <property name="text"><string>MONTO</string></property>
+             </column>
+             <column>
+              <property name="text"><string>ESTADO</string></property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout">
+             <property name="spacing">
+              <number>8</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="btnNuevaFactura">
+               <property name="text">
+                <string>+ NUEVA FACTURA</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnNuevoPresupuesto">
+               <property name="text">
+                <string>+ PRESUPUESTO</string>
+               </property>
+               <property name="styleSheet">
+                <string>background-color: #0284c7; color: #fff;</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnRegistrarPago">
+               <property name="text">
+                <string>REGISTRAR PAGO</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnVerDetalle">
+               <property name="text">
+                <string>VER DETALLE</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnAnularFactura">
+               <property name="text">
+                <string>ANULAR FACTURA</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnConvertirFactura">
+               <property name="text">
+                <string>CONVERTIR A FACTURA</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer>
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

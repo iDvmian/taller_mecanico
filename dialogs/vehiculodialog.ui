@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VehiculoDialog</class>
+ <widget class="QDialog" name="VehiculoDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>480</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Registro de Vehículo</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+QDialog {
+    background-color: #f5f5f5;
+}
+
+QLabel {
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+QLabel#titleLabel {
+    color: #ea6f15;
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+QLineEdit, QSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #333333;
+    font-size: 13px;
+    min-height: 20px;
+}
+
+QLineEdit:focus, QSpinBox:focus {
+    border: 2px solid #ea6f15;
+    background-color: #fffaf5;
+}
+
+QLineEdit::placeholder {
+    color: #999999;
+}
+
+QSpinBox::up-button, QSpinBox::down-button {
+    background-color: #ea6f15;
+    border: none;
+    width: 20px;
+}
+
+QSpinBox::up-button:hover, QSpinBox::down-button:hover {
+    background-color: #f58025;
+}
+
+QCheckBox {
+    color: #333333;
+    font-size: 13px;
+    font-weight: bold;
+    spacing: 8px;
+}
+
+QCheckBox::indicator {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #c0c0c0;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #ea6f15;
+    border-color: #ea6f15;
+}
+
+QPushButton {
+    background-color: #ea6f15;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: bold;
+    min-width: 120px;
+}
+
+QPushButton:hover {
+    background-color: #f58025;
+}
+
+QPushButton#btnCancelar {
+    background-color: #888888;
+    color: #ffffff;
+}
+
+QPushButton#btnCancelar:hover {
+    background-color: #999999;
+}
+   </string>
+  </property>
+  <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>14</number>
+   </property>
+   <property name="margin">
+    <number>24</number>
+   </property>
+   <item>
+    <widget class="QLabel" name="titleLabel">
+     <property name="text">
+      <string>DATOS DEL VEHÍCULO</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout">
+     <property name="labelAlignment">
+      <set>Qt::AlignRight|Qt::AlignVCenter</set>
+     </property>
+     <property name="horizontalSpacing">
+      <number>16</number>
+     </property>
+     <property name="verticalSpacing">
+      <number>10</number>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Patente:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="editPatente">
+       <property name="placeholderText">
+        <string>Ej: ABCD-12</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Modelo:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="editModelo">
+       <property name="placeholderText">
+        <string>Ej: Toyota Corolla</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Año:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="editAnio">
+       <property name="placeholderText">
+        <string>Ej: 2024</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Serie Motor:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="editSerieMotor">
+       <property name="placeholderText">
+        <string>Número de serie del motor</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel">
+       <property name="text">
+        <string>Cilindrada:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QSpinBox" name="spinCC">
+       <property name="suffix">
+        <string> CC</string>
+       </property>
+       <property name="minimum">
+        <number>50</number>
+       </property>
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+       <property name="value">
+        <number>1600</number>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="labelEspecifico">
+       <property name="text">
+        <string>Puertas:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QSpinBox" name="spinEspecifico">
+       <property name="minimum">
+        <number>2</number>
+       </property>
+       <property name="maximum">
+        <number>5</number>
+       </property>
+       <property name="value">
+        <number>4</number>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QCheckBox" name="checkCajon">
+       <property name="text">
+        <string>Tiene cajón de carga</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="labelBateria">
+       <property name="text">
+        <string>Batería:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QSpinBox" name="spinBateria">
+       <property name="suffix">
+        <string> %</string>
+       </property>
+       <property name="minimum">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer>
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>12</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCancelar">
+       <property name="text">
+        <string>CANCELAR</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnAceptar">
+       <property name="text">
+        <string>GUARDAR</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
