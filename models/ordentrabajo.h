@@ -100,6 +100,7 @@ public:
     // Gestión de repuestos
     void agregarRepuesto(const RepuestoUsado &repuesto);
     void quitarRepuesto(int repuestoId);
+    void setRepuestosUsados(const QVector<RepuestoUsado> &repuestos);
     void recalcularCostoRepuestos();
 
     // Cambios de estado
@@ -121,6 +122,7 @@ public:
 };
 
 #endif // ORDENTRABAJO_H
+
 
 
 

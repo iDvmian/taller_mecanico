@@ -727,9 +727,9 @@ bool DatabaseManager::insertarOrdenTrabajo(OrdenTrabajo &ot) {
     query.prepare(R"(
         INSERT INTO ordenes_trabajo (numero, cliente_id, vehiculo_id, descripcion_problema,
                                      diagnostico, trabajo_realizado, estado, fecha_ingreso,
-                                     fecha_estimada_entrega, costo_mano_obra, descuento, observaciones)
+                                     fecha_estimada_entrega, costo_mano_obra, costo_repuestos, descuento, observaciones)
         VALUES (:numero, :cliente_id, :vehiculo_id, :descripcion, :diagnostico, :trabajo,
-                :estado, :fecha_ingreso, :fecha_estimada, :costo_mo, :descuento, :obs)
+                :estado, :fecha_ingreso, :fecha_estimada, :costo_mo, :costo_rep, :descuento, :obs)
     )");
     query.bindValue(":numero", ot.getNumero());
     query.bindValue(":cliente_id", ot.getClienteId());
@@ -741,13 +741,35 @@ bool DatabaseManager::insertarOrdenTrabajo(OrdenTrabajo &ot) {
     query.bindValue(":fecha_ingreso", ot.getFechaIngreso().toString(Qt::ISODate));
     query.bindValue(":fecha_estimada", ot.getFechaEstimadaEntrega().toString(Qt::ISODate));
     query.bindValue(":costo_mo", ot.getCostoManoObra());
+    query.bindValue(":costo_rep", ot.getCostoRepuestos());
     query.bindValue(":descuento", ot.getDescuento());
     query.bindValue(":obs", ot.getObservaciones());
 
     if (!query.exec()) {
         throw ErrorBaseDatos(query.lastError().text().toStdString());
     }
-    ot.setId(query.lastInsertId().toInt());
+    
+    int ordenId = query.lastInsertId().toInt();
+    ot.setId(ordenId);
+    
+    // Insertar repuestos usados
+    QVector<RepuestoUsado> repuestos = ot.getRepuestosUsados();
+    for (const RepuestoUsado &rep : repuestos) {
+        QSqlQuery queryRep;
+        queryRep.prepare(R"(
+            INSERT INTO repuestos_orden (orden_id, repuesto_id, cantidad, precio_unitario)
+            VALUES (:orden_id, :repuesto_id, :cantidad, :precio)
+        )");
+        queryRep.bindValue(":orden_id", ordenId);
+        queryRep.bindValue(":repuesto_id", rep.repuestoId);
+        queryRep.bindValue(":cantidad", rep.cantidad);
+        queryRep.bindValue(":precio", rep.precioUnitario);
+        
+        if (!queryRep.exec()) {
+            throw ErrorBaseDatos(queryRep.lastError().text().toStdString());
+        }
+    }
+    
     return true;
 }
 
@@ -772,7 +794,35 @@ bool DatabaseManager::actualizarOrdenTrabajo(const OrdenTrabajo &ot) {
     query.bindValue(":descuento", ot.getDescuento());
     query.bindValue(":obs", ot.getObservaciones());
 
-    return query.exec();
+    if (!query.exec()) {
+        return false;
+    }
+    
+    // Eliminar repuestos anteriores
+    QSqlQuery queryDel;
+    queryDel.prepare("DELETE FROM repuestos_orden WHERE orden_id = :orden_id");
+    queryDel.bindValue(":orden_id", ot.getId());
+    queryDel.exec();
+    
+    // Insertar nuevos repuestos
+    QVector<RepuestoUsado> repuestos = ot.getRepuestosUsados();
+    for (const RepuestoUsado &rep : repuestos) {
+        QSqlQuery queryRep;
+        queryRep.prepare(R"(
+            INSERT INTO repuestos_orden (orden_id, repuesto_id, cantidad, precio_unitario)
+            VALUES (:orden_id, :repuesto_id, :cantidad, :precio)
+        )");
+        queryRep.bindValue(":orden_id", ot.getId());
+        queryRep.bindValue(":repuesto_id", rep.repuestoId);
+        queryRep.bindValue(":cantidad", rep.cantidad);
+        queryRep.bindValue(":precio", rep.precioUnitario);
+        
+        if (!queryRep.exec()) {
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 bool DatabaseManager::eliminarOrdenTrabajo(int otId) {
@@ -803,6 +853,30 @@ OrdenTrabajo DatabaseManager::obtenerOrdenTrabajo(int otId) {
         ot.setCostoManoObra(query.value("costo_mano_obra").toDouble());
         ot.setDescuento(query.value("descuento").toDouble());
         ot.setObservaciones(query.value("observaciones").toString());
+        
+        // Cargar repuestos usados
+        QVector<RepuestoUsado> repuestos;
+        QSqlQuery queryRep;
+        queryRep.prepare(R"(
+            SELECT ro.*, r.nombre 
+            FROM repuestos_orden ro
+            JOIN repuestos r ON ro.repuesto_id = r.id
+            WHERE ro.orden_id = :orden_id
+        )");
+        queryRep.bindValue(":orden_id", otId);
+        
+        if (queryRep.exec()) {
+            while (queryRep.next()) {
+                RepuestoUsado ru;
+                ru.repuestoId = queryRep.value("repuesto_id").toInt();
+                ru.nombre = queryRep.value("nombre").toString();
+                ru.cantidad = queryRep.value("cantidad").toInt();
+                ru.precioUnitario = queryRep.value("precio_unitario").toDouble();
+                ru.subtotal = ru.cantidad * ru.precioUnitario;
+                repuestos.append(ru);
+            }
+        }
+        ot.setRepuestosUsados(repuestos);
     }
     return ot;
 }
@@ -813,7 +887,9 @@ QVector<OrdenTrabajo> DatabaseManager::obtenerTodasOrdenes() {
 
     while (query.next()) {
         OrdenTrabajo ot;
-        ot.setId(query.value("id").toInt());
+        int otId = query.value("id").toInt();
+        
+        ot.setId(otId);
         ot.setNumero(query.value("numero").toString());
         ot.setClienteId(query.value("cliente_id").toInt());
         ot.setVehiculoId(query.value("vehiculo_id").toInt());
@@ -821,6 +897,32 @@ QVector<OrdenTrabajo> DatabaseManager::obtenerTodasOrdenes() {
         ot.setEstadoFromInt(query.value("estado").toInt());
         ot.setFechaIngreso(QDateTime::fromString(query.value("fecha_ingreso").toString(), Qt::ISODate));
         ot.setCostoManoObra(query.value("costo_mano_obra").toDouble());
+        ot.setDescuento(query.value("descuento").toDouble());
+        
+        // Cargar repuestos usados
+        QVector<RepuestoUsado> repuestos;
+        QSqlQuery queryRep;
+        queryRep.prepare(R"(
+            SELECT ro.*, r.nombre 
+            FROM repuestos_orden ro
+            JOIN repuestos r ON ro.repuesto_id = r.id
+            WHERE ro.orden_id = :orden_id
+        )");
+        queryRep.bindValue(":orden_id", otId);
+        
+        if (queryRep.exec()) {
+            while (queryRep.next()) {
+                RepuestoUsado ru;
+                ru.repuestoId = queryRep.value("repuesto_id").toInt();
+                ru.nombre = queryRep.value("nombre").toString();
+                ru.cantidad = queryRep.value("cantidad").toInt();
+                ru.precioUnitario = queryRep.value("precio_unitario").toDouble();
+                ru.subtotal = ru.cantidad * ru.precioUnitario;
+                repuestos.append(ru);
+            }
+        }
+        ot.setRepuestosUsados(repuestos);
+        
         ordenes.append(ot);
     }
     return ordenes;

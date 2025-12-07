@@ -188,7 +188,7 @@ QPushButton#btnCancelar:hover {
       </widget>
      </item>
      <item row="4" column="0">
-      <widget class="QLabel">
+      <widget class="QLabel" name="labelCC">
        <property name="text">
         <string>Cilindrada:</string>
        </property>

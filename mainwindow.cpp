@@ -457,8 +457,28 @@ void MainWindow::onNuevaOrden() {
     if (dialog.exec() == QDialog::Accepted) {
         try {
             OrdenTrabajo ot = dialog.getOrdenTrabajo();
+            
+            // Verificar y descontar stock de repuestos
+            QVector<RepuestoUsado> repuestos = ot.getRepuestosUsados();
+            for (const RepuestoUsado &ru : repuestos) {
+                Repuesto rep = db->obtenerRepuesto(ru.repuestoId);
+                
+                if (rep.getStockActual() < ru.cantidad) {
+                    QMessageBox::warning(this, "Stock insuficiente", 
+                                       QString("No hay suficiente stock de '%1'.\nDisponible: %2, Requerido: %3")
+                                       .arg(ru.nombre).arg(rep.getStockActual()).arg(ru.cantidad));
+                    return;
+                }
+                
+                // Descontar stock
+                rep.descontarStock(ru.cantidad);
+                db->actualizarRepuesto(rep);
+            }
+            
+            // Guardar la orden
             db->insertarOrdenTrabajo(ot);
             actualizarTablaOrdenes();
+            actualizarTablaInventario();  // Actualizar inventario también
             actualizarDashboard();
             QMessageBox::information(this, "Éxito", "Orden de trabajo creada: " + ot.getNumero());
         } catch (const std::exception &e) {
@@ -475,14 +495,48 @@ void MainWindow::onEditarOrden() {
     }
     
     try {
-        OrdenTrabajo ot = db->obtenerOrdenTrabajo(ordenId);
-        OrdenTrabajoDialog dialog(ot, this);
+        OrdenTrabajo otOriginal = db->obtenerOrdenTrabajo(ordenId);
+        OrdenTrabajoDialog dialog(otOriginal, this);
         
         if (dialog.exec() == QDialog::Accepted) {
             OrdenTrabajo otEditada = dialog.getOrdenTrabajo();
             otEditada.setId(ordenId);
+            
+            // Restaurar stock de los repuestos originales
+            QVector<RepuestoUsado> repuestosOriginales = otOriginal.getRepuestosUsados();
+            for (const RepuestoUsado &ru : repuestosOriginales) {
+                Repuesto rep = db->obtenerRepuesto(ru.repuestoId);
+                rep.agregarStock(ru.cantidad);
+                db->actualizarRepuesto(rep);
+            }
+            
+            // Descontar stock de los nuevos repuestos
+            QVector<RepuestoUsado> repuestosNuevos = otEditada.getRepuestosUsados();
+            for (const RepuestoUsado &ru : repuestosNuevos) {
+                Repuesto rep = db->obtenerRepuesto(ru.repuestoId);
+                
+                if (rep.getStockActual() < ru.cantidad) {
+                    // Revertir cambios
+                    for (const RepuestoUsado &ruOrig : repuestosOriginales) {
+                        Repuesto repOrig = db->obtenerRepuesto(ruOrig.repuestoId);
+                        repOrig.descontarStock(ruOrig.cantidad);
+                        db->actualizarRepuesto(repOrig);
+                    }
+                    
+                    QMessageBox::warning(this, "Stock insuficiente", 
+                                       QString("No hay suficiente stock de '%1'.\nDisponible: %2, Requerido: %3")
+                                       .arg(ru.nombre).arg(rep.getStockActual()).arg(ru.cantidad));
+                    return;
+                }
+                
+                rep.descontarStock(ru.cantidad);
+                db->actualizarRepuesto(rep);
+            }
+            
+            // Actualizar la orden
             db->actualizarOrdenTrabajo(otEditada);
             actualizarTablaOrdenes();
+            actualizarTablaInventario();  // Actualizar inventario también
             actualizarDashboard();
             QMessageBox::information(this, "Éxito", "Orden actualizada correctamente.");
         }
@@ -527,11 +581,32 @@ void MainWindow::actualizarTablaOrdenes() {
         int row = ordenesTable->rowCount();
         ordenesTable->insertRow(row);
         
+        // Obtener datos del cliente
+        QString nombreCliente = "Sin cliente";
+        try {
+            Cliente cliente = db->obtenerCliente(ot.getClienteId());
+            nombreCliente = cliente.getNombreCompleto();
+        } catch (...) {}
+        
+        // Obtener datos del vehículo
+        QString vehiculo = "Sin vehículo";
+        try {
+            auto vehiculos = db->obtenerTodosVehiculos();
+            for (const auto &v : vehiculos) {
+                if (v->getId() == ot.getVehiculoId()) {
+                    vehiculo = QString("%1 - %2").arg(v->getPatente()).arg(v->getTipo());
+                    break;
+                }
+            }
+        } catch (...) {}
+        
         ordenesTable->setItem(row, 0, new QTableWidgetItem(QString::number(ot.getId())));
         ordenesTable->setItem(row, 1, new QTableWidgetItem(ot.getNumero()));
-        ordenesTable->setItem(row, 2, new QTableWidgetItem(ot.getEstadoTexto()));
-        ordenesTable->setItem(row, 3, new QTableWidgetItem(ot.getFechaIngreso().toString("dd/MM/yyyy")));
-        ordenesTable->setItem(row, 4, new QTableWidgetItem(QString("$%1").arg(ot.getCostoManoObra())));
+        ordenesTable->setItem(row, 2, new QTableWidgetItem(nombreCliente));
+        ordenesTable->setItem(row, 3, new QTableWidgetItem(vehiculo));
+        ordenesTable->setItem(row, 4, new QTableWidgetItem(ot.getEstadoTexto()));
+        ordenesTable->setItem(row, 5, new QTableWidgetItem(ot.getFechaIngreso().toString("dd/MM/yyyy")));
+        ordenesTable->setItem(row, 6, new QTableWidgetItem(QString("$%1").arg(ot.getTotal(), 0, 'f', 0)));
     }
     ordenesTable->resizeColumnsToContents();
 }

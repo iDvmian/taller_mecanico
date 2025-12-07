@@ -57,6 +57,10 @@ void VehiculoDialog::setupUI() {
             ui->spinBateria->setMaximum(100);
             ui->spinBateria->setValue(100);
             ui->spinBateria->setSuffix("%");
+            // Ocultar cilindrada para vehículos eléctricos
+            ui->labelCC->setVisible(false);
+            ui->spinCC->setVisible(false);
+            ui->spinCC->setValue(0);
             break;
     }
 }
@@ -115,7 +119,7 @@ AutoHibrido* VehiculoDialog::getHibrido() const {
         ui->editModelo->text().trimmed(),
         ui->editAnio->text().trimmed(),
         ui->editSerieMotor->text().trimmed(),
-        ui->spinCC->value(),
+        0,  // Los vehículos eléctricos/híbridos no tienen cilindrada
         ui->spinEspecifico->value(),
         ui->spinBateria->value()
     );

@@ -82,6 +82,11 @@ void OrdenTrabajo::quitarRepuesto(int repuestoId) {
     recalcularCostoRepuestos();
 }
 
+void OrdenTrabajo::setRepuestosUsados(const QVector<RepuestoUsado> &repuestos) {
+    repuestosUsados = repuestos;
+    recalcularCostoRepuestos();
+}
+
 void OrdenTrabajo::recalcularCostoRepuestos() {
     costoRepuestos = 0;
     for (const auto &rep : repuestosUsados) {
@@ -168,6 +173,7 @@ QTextStream &operator<<(QTextStream &out, const OrdenTrabajo &ot) {
     out << ot.numero << " - " << ot.getEstadoTexto() << " - Total: $" << ot.getTotal();
     return out;
 }
+
 
 
 

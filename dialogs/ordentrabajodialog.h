@@ -14,6 +14,7 @@
 #include "../models/ordentrabajo.h"
 #include "../models/cliente.h"
 #include "../models/vehiculo.h"
+#include "../models/repuesto.h"
 
 class OrdenTrabajoDialog : public QDialog {
     Q_OBJECT
@@ -32,17 +33,21 @@ private:
     QDoubleSpinBox *descuentoSpin;
     QTextEdit *observacionesEdit;
     QLabel *totalLabel;
+    QLabel *costoRepuestosLabel;
     QTableWidget *repuestosTable;
     
     OrdenTrabajo ordenTrabajo;
     QVector<Cliente> clientes;
+    QVector<RepuestoUsado> repuestosAgregados;
     bool modoEdicion;
 
     void setupUI();
     void cargarClientes();
     void cargarVehiculos(int clienteId);
     void cargarDatos();
+    void cargarRepuestosTabla();
     void actualizarTotal();
+    double calcularTotalRepuestos() const;
 
 public:
     explicit OrdenTrabajoDialog(QWidget *parent = nullptr);
@@ -54,9 +59,11 @@ private slots:
     void clienteSeleccionado(int index);
     void aceptar();
     void agregarRepuesto();
+    void quitarRepuesto();
 };
 
 #endif // ORDENTRABAJODIALOG_H
+
 
 
 

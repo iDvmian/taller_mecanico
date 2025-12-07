@@ -44,7 +44,8 @@ template <> constexpr inline auto OrdenTrabajoDialog::qt_create_metaobjectdata<q
         "",
         "index",
         "aceptar",
-        "agregarRepuesto"
+        "agregarRepuesto",
+        "quitarRepuesto"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -56,6 +57,8 @@ template <> constexpr inline auto OrdenTrabajoDialog::qt_create_metaobjectdata<q
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'agregarRepuesto'
         QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'quitarRepuesto'
+        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -82,6 +85,7 @@ void OrdenTrabajoDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         case 0: _t->clienteSeleccionado((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
         case 1: _t->aceptar(); break;
         case 2: _t->agregarRepuesto(); break;
+        case 3: _t->quitarRepuesto(); break;
         default: ;
         }
     }
@@ -106,14 +110,14 @@ int OrdenTrabajoDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
+        if (_id < 4)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 3;
+        _id -= 4;
     }
     return _id;
 }

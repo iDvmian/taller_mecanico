@@ -71,3 +71,4 @@ QTextStream &operator<<(QTextStream &out, const Repuesto &r) {
 
 
 
+

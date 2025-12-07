@@ -736,6 +736,12 @@ QMessageBox QPushButton:hover {
               <property name="text"><string>N° ORDEN</string></property>
              </column>
              <column>
+              <property name="text"><string>CLIENTE</string></property>
+             </column>
+             <column>
+              <property name="text"><string>VEHÍCULO</string></property>
+             </column>
+             <column>
               <property name="text"><string>ESTADO</string></property>
              </column>
              <column>

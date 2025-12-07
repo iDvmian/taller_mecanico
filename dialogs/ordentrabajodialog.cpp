@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include <QTabWidget>
+#include <QSpinBox>
 
 OrdenTrabajoDialog::OrdenTrabajoDialog(QWidget *parent)
     : QDialog(parent), modoEdicion(false) {
@@ -164,6 +165,10 @@ void OrdenTrabajoDialog::setupUI() {
             this, &OrdenTrabajoDialog::actualizarTotal);
     costoFormLayout->addRow("Mano de Obra:", costoManoObraSpin);
 
+    costoRepuestosLabel = new QLabel("$ 0");
+    costoRepuestosLabel->setStyleSheet("font-size: 13px; color: #555555;");
+    costoFormLayout->addRow("Repuestos:", costoRepuestosLabel);
+
     descuentoSpin = new QDoubleSpinBox();
     descuentoSpin->setSuffix(" %");
     descuentoSpin->setMaximum(100);
@@ -181,15 +186,23 @@ void OrdenTrabajoDialog::setupUI() {
     QGroupBox *repuestosGroup = new QGroupBox("Repuestos Utilizados");
     QVBoxLayout *repLayout = new QVBoxLayout(repuestosGroup);
     
-    repuestosTable = new QTableWidget(0, 4);
-    repuestosTable->setHorizontalHeaderLabels({"Repuesto", "Cantidad", "Precio", "Subtotal"});
-    repuestosTable->horizontalHeader()->setStretchLastSection(true);
+    repuestosTable = new QTableWidget(0, 5);
+    repuestosTable->setHorizontalHeaderLabels({"Repuesto", "Cantidad", "Precio Unit.", "Subtotal", ""});
+    repuestosTable->horizontalHeader()->setStretchLastSection(false);
+    repuestosTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+    repuestosTable->setColumnWidth(1, 80);
+    repuestosTable->setColumnWidth(2, 100);
+    repuestosTable->setColumnWidth(3, 100);
+    repuestosTable->setColumnWidth(4, 80);
     repuestosTable->setMaximumHeight(150);
     repLayout->addWidget(repuestosTable);
 
+    QHBoxLayout *btnRepLayout = new QHBoxLayout();
     QPushButton *agregarRepBtn = new QPushButton("+ Agregar Repuesto");
     connect(agregarRepBtn, &QPushButton::clicked, this, &OrdenTrabajoDialog::agregarRepuesto);
-    repLayout->addWidget(agregarRepBtn);
+    btnRepLayout->addWidget(agregarRepBtn);
+    btnRepLayout->addStretch();
+    repLayout->addLayout(btnRepLayout);
 
     costosLayout->addWidget(repuestosGroup);
     costosLayout->addStretch();
@@ -274,13 +287,52 @@ void OrdenTrabajoDialog::cargarDatos() {
     descuentoSpin->setValue(ordenTrabajo.getDescuento());
     observacionesEdit->setPlainText(ordenTrabajo.getObservaciones());
     
+    // Cargar repuestos
+    repuestosAgregados = ordenTrabajo.getRepuestosUsados();
+    cargarRepuestosTabla();
+    
     actualizarTotal();
+}
+
+void OrdenTrabajoDialog::cargarRepuestosTabla() {
+    repuestosTable->setRowCount(0);
+    
+    for (int i = 0; i < repuestosAgregados.size(); ++i) {
+        const RepuestoUsado &rep = repuestosAgregados[i];
+        int row = repuestosTable->rowCount();
+        repuestosTable->insertRow(row);
+        
+        repuestosTable->setItem(row, 0, new QTableWidgetItem(rep.nombre));
+        repuestosTable->setItem(row, 1, new QTableWidgetItem(QString::number(rep.cantidad)));
+        repuestosTable->setItem(row, 2, new QTableWidgetItem(QString("$ %1").arg(rep.precioUnitario, 0, 'f', 0)));
+        repuestosTable->setItem(row, 3, new QTableWidgetItem(QString("$ %1").arg(rep.subtotal, 0, 'f', 0)));
+        
+        // Botón quitar
+        QPushButton *btnQuitar = new QPushButton("✕");
+        btnQuitar->setStyleSheet("background-color: #e74c3c; font-weight: bold; padding: 4px;");
+        btnQuitar->setMaximumWidth(60);
+        btnQuitar->setProperty("row", i);
+        connect(btnQuitar, &QPushButton::clicked, this, &OrdenTrabajoDialog::quitarRepuesto);
+        repuestosTable->setCellWidget(row, 4, btnQuitar);
+    }
+}
+
+double OrdenTrabajoDialog::calcularTotalRepuestos() const {
+    double total = 0;
+    for (const RepuestoUsado &rep : repuestosAgregados) {
+        total += rep.subtotal;
+    }
+    return total;
 }
 
 void OrdenTrabajoDialog::actualizarTotal() {
     double manoObra = costoManoObraSpin->value();
+    double repuestos = calcularTotalRepuestos();
+    double subtotal = manoObra + repuestos;
     double descuento = descuentoSpin->value();
-    double total = manoObra - (manoObra * descuento / 100);
+    double total = subtotal - (subtotal * descuento / 100);
+    
+    costoRepuestosLabel->setText(QString("$ %1").arg(repuestos, 0, 'f', 0));
     totalLabel->setText(QString("$ %1").arg(total, 0, 'f', 0));
 }
 
@@ -314,11 +366,144 @@ void OrdenTrabajoDialog::aceptar() {
     ordenTrabajo.setCostoManoObra(costoManoObraSpin->value());
     ordenTrabajo.setDescuento(descuentoSpin->value());
     ordenTrabajo.setObservaciones(observacionesEdit->toPlainText().trimmed());
+    ordenTrabajo.setRepuestosUsados(repuestosAgregados);
 
     accept();
 }
 
 void OrdenTrabajoDialog::agregarRepuesto() {
-    QMessageBox::information(this, "Info", "Función de agregar repuesto próximamente disponible.\nPor ahora puede agregar el costo en Mano de Obra.");
+    DatabaseManager *db = DatabaseManager::getInstance();
+    QVector<Repuesto> repuestos = db->obtenerTodosRepuestos();
+    
+    if (repuestos.isEmpty()) {
+        QMessageBox::warning(this, "Sin repuestos", "No hay repuestos registrados en el inventario.");
+        return;
+    }
+    
+    // Crear diálogo personalizado
+    QDialog *dialog = new QDialog(this);
+    dialog->setWindowTitle("Agregar Repuesto");
+    dialog->setMinimumWidth(500);
+    dialog->setStyleSheet(styleSheet());
+    
+    QVBoxLayout *layout = new QVBoxLayout(dialog);
+    
+    QGroupBox *group = new QGroupBox("Seleccionar Repuesto");
+    QFormLayout *formLayout = new QFormLayout(group);
+    
+    // ComboBox de repuestos
+    QComboBox *repuestoCombo = new QComboBox();
+    for (const Repuesto &r : repuestos) {
+        QString texto = QString("%1 - %2 (Stock: %3) - $%4")
+                           .arg(r.getCodigo())
+                           .arg(r.getNombre())
+                           .arg(r.getStockActual())
+                           .arg(r.getPrecioVenta(), 0, 'f', 0);
+        repuestoCombo->addItem(texto, r.getId());
+    }
+    formLayout->addRow("Repuesto:", repuestoCombo);
+    
+    // SpinBox cantidad
+    QSpinBox *cantidadSpin = new QSpinBox();
+    cantidadSpin->setMinimum(1);
+    cantidadSpin->setMaximum(1000);
+    cantidadSpin->setValue(1);
+    formLayout->addRow("Cantidad:", cantidadSpin);
+    
+    // Label stock disponible
+    QLabel *stockLabel = new QLabel();
+    stockLabel->setStyleSheet("color: #555555; font-weight: normal;");
+    
+    // Actualizar stock al cambiar repuesto
+    auto actualizarStock = [&]() {
+        int idx = repuestoCombo->currentIndex();
+        if (idx >= 0) {
+            int stock = repuestos[idx].getStockActual();
+            stockLabel->setText(QString("Stock disponible: %1 unidades").arg(stock));
+            cantidadSpin->setMaximum(stock > 0 ? stock : 1);
+            
+            if (stock <= 0) {
+                stockLabel->setText("⚠️ SIN STOCK");
+                stockLabel->setStyleSheet("color: #e74c3c; font-weight: bold;");
+            } else if (repuestos[idx].esStockCritico()) {
+                stockLabel->setStyleSheet("color: #e67e22; font-weight: bold;");
+            } else {
+                stockLabel->setStyleSheet("color: #27ae60; font-weight: normal;");
+            }
+        }
+    };
+    
+    connect(repuestoCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), actualizarStock);
+    actualizarStock();
+    
+    formLayout->addRow("", stockLabel);
+    layout->addWidget(group);
+    
+    // Botones
+    QHBoxLayout *btnLayout = new QHBoxLayout();
+    QPushButton *btnCancelar = new QPushButton("Cancelar");
+    QPushButton *btnAgregar = new QPushButton("Agregar");
+    btnAgregar->setDefault(true);
+    
+    connect(btnCancelar, &QPushButton::clicked, dialog, &QDialog::reject);
+    connect(btnAgregar, &QPushButton::clicked, dialog, &QDialog::accept);
+    
+    btnLayout->addStretch();
+    btnLayout->addWidget(btnCancelar);
+    btnLayout->addWidget(btnAgregar);
+    layout->addLayout(btnLayout);
+    
+    if (dialog->exec() == QDialog::Accepted) {
+        int idx = repuestoCombo->currentIndex();
+        if (idx < 0) return;
+        
+        const Repuesto &repuesto = repuestos[idx];
+        int cantidad = cantidadSpin->value();
+        
+        // Verificar stock
+        if (cantidad > repuesto.getStockActual()) {
+            QMessageBox::warning(this, "Stock insuficiente", 
+                               QString("No hay suficiente stock. Disponible: %1").arg(repuesto.getStockActual()));
+            return;
+        }
+        
+        // Crear RepuestoUsado
+        RepuestoUsado ru;
+        ru.repuestoId = repuesto.getId();
+        ru.nombre = repuesto.getNombre();
+        ru.cantidad = cantidad;
+        ru.precioUnitario = repuesto.getPrecioVenta();
+        ru.subtotal = cantidad * repuesto.getPrecioVenta();
+        
+        // Agregar a la lista
+        repuestosAgregados.append(ru);
+        
+        // Actualizar tabla y total
+        cargarRepuestosTabla();
+        actualizarTotal();
+    }
+    
+    delete dialog;
+}
+
+void OrdenTrabajoDialog::quitarRepuesto() {
+    QPushButton *btn = qobject_cast<QPushButton*>(sender());
+    if (!btn) return;
+    
+    int row = btn->property("row").toInt();
+    
+    if (row >= 0 && row < repuestosAgregados.size()) {
+        QString nombre = repuestosAgregados[row].nombre;
+        
+        auto reply = QMessageBox::question(this, "Confirmar", 
+                                          QString("¿Quitar '%1' de la orden?").arg(nombre),
+                                          QMessageBox::Yes | QMessageBox::No);
+        
+        if (reply == QMessageBox::Yes) {
+            repuestosAgregados.removeAt(row);
+            cargarRepuestosTabla();
+            actualizarTotal();
+        }
+    }
 }
 

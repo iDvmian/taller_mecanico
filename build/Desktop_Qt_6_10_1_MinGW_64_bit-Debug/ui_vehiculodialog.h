@@ -38,7 +38,7 @@ public:
     QLineEdit *editAnio;
     QLabel *label3;
     QLineEdit *editSerieMotor;
-    QLabel *label4;
+    QLabel *labelCC;
     QSpinBox *spinCC;
     QLabel *labelEspecifico;
     QSpinBox *spinEspecifico;
@@ -202,10 +202,10 @@ public:
 
         formLayout->setWidget(3, QFormLayout::ItemRole::FieldRole, editSerieMotor);
 
-        label4 = new QLabel(VehiculoDialog);
-        label4->setObjectName("label4");
+        labelCC = new QLabel(VehiculoDialog);
+        labelCC->setObjectName("labelCC");
 
-        formLayout->setWidget(4, QFormLayout::ItemRole::LabelRole, label4);
+        formLayout->setWidget(4, QFormLayout::ItemRole::LabelRole, labelCC);
 
         spinCC = new QSpinBox(VehiculoDialog);
         spinCC->setObjectName("spinCC");
@@ -291,7 +291,7 @@ public:
         editAnio->setPlaceholderText(QCoreApplication::translate("VehiculoDialog", "Ej: 2024", nullptr));
         label3->setText(QCoreApplication::translate("VehiculoDialog", "Serie Motor:", nullptr));
         editSerieMotor->setPlaceholderText(QCoreApplication::translate("VehiculoDialog", "N\303\272mero de serie del motor", nullptr));
-        label4->setText(QCoreApplication::translate("VehiculoDialog", "Cilindrada:", nullptr));
+        labelCC->setText(QCoreApplication::translate("VehiculoDialog", "Cilindrada:", nullptr));
         spinCC->setSuffix(QCoreApplication::translate("VehiculoDialog", " CC", nullptr));
         labelEspecifico->setText(QCoreApplication::translate("VehiculoDialog", "Puertas:", nullptr));
         checkCajon->setText(QCoreApplication::translate("VehiculoDialog", "Tiene caj\303\263n de carga", nullptr));
