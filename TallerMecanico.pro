@@ -11,57 +11,57 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     database/databasemanager.cpp \
-    models/motor.cpp \
-    models/vehiculo.cpp \
-    models/auto.cpp \
-    models/moto.cpp \
-    models/autohibrido.cpp \
-    models/cliente.cpp \
-    models/repuesto.cpp \
-    models/ordentrabajo.cpp \
-    models/documento.cpp \
-    models/citaagenda.cpp \
-    models/historialservicio.cpp \
-    dialogs/clientedialog.cpp \
-    dialogs/vehiculodialog.cpp \
-    dialogs/repuestodialog.cpp \
-    dialogs/ordentrabajodialog.cpp \
-    dialogs/citadialog.cpp \
-    dialogs/facturadialog.cpp \
-    dialogs/presupuestodialog.cpp
+    clases/motor.cpp \
+    clases/vehiculo.cpp \
+    clases/auto.cpp \
+    clases/moto.cpp \
+    clases/autohibrido.cpp \
+    clases/cliente.cpp \
+    clases/repuesto.cpp \
+    clases/ordentrabajo.cpp \
+    clases/documento.cpp \
+    clases/citaagenda.cpp \
+    clases/historialservicio.cpp \
+    ventanas/clientedialog.cpp \
+    ventanas/vehiculodialog.cpp \
+    ventanas/repuestodialog.cpp \
+    ventanas/ordentrabajodialog.cpp \
+    ventanas/citadialog.cpp \
+    ventanas/facturadialog.cpp \
+    ventanas/presupuestodialog.cpp
 
 HEADERS += \
     mainwindow.h \
     database/databasemanager.h \
-    models/motor.h \
-    models/vehiculo.h \
-    models/auto.h \
-    models/moto.h \
-    models/autohibrido.h \
-    models/cliente.h \
-    models/repuesto.h \
-    models/ordentrabajo.h \
-    models/documento.h \
-    models/citaagenda.h \
-    models/historialservicio.h \
-    dialogs/clientedialog.h \
-    dialogs/vehiculodialog.h \
-    dialogs/repuestodialog.h \
-    dialogs/ordentrabajodialog.h \
-    dialogs/citadialog.h \
-    dialogs/facturadialog.h \
-    dialogs/presupuestodialog.h
+    clases/motor.h \
+    clases/vehiculo.h \
+    clases/auto.h \
+    clases/moto.h \
+    clases/autohibrido.h \
+    clases/cliente.h \
+    clases/repuesto.h \
+    clases/ordentrabajo.h \
+    clases/documento.h \
+    clases/citaagenda.h \
+    clases/historialservicio.h \
+    ventanas/clientedialog.h \
+    ventanas/vehiculodialog.h \
+    ventanas/repuestodialog.h \
+    ventanas/ordentrabajodialog.h \
+    ventanas/citadialog.h \
+    ventanas/facturadialog.h \
+    ventanas/presupuestodialog.h
 
 FORMS += \
     mainwindow.ui \
-    dialogs/clientedialog.ui \
-    dialogs/vehiculodialog.ui
+    ventanas/clientedialog.ui \
+    ventanas/vehiculodialog.ui
 
 # Recursos (logo e imágenes)
 RESOURCES += resources.qrc
 
 # Icono de la aplicación (Windows)
-RC_ICONS = images/icon.ico
+RC_ICONS = imagenes/icon.ico
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

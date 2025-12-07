@@ -79,7 +79,7 @@ taller_mecanico/
 ├── database/
 │   ├── databasemanager.h        # Interfaz de gestión de BD
 │   └── databasemanager.cpp      # Gestión de SQLite y CRUD
-├── models/
+├── clases/
 │   ├── motor.h/cpp              # Clase Motor (Composición)
 │   ├── vehiculo.h/cpp           # Clase Base Abstracta
 │   ├── auto.h/cpp               # Clase Derivada Auto
@@ -91,15 +91,15 @@ taller_mecanico/
 │   ├── documento.h/cpp          # Base abstracta para documentos
 │   ├── citaagenda.h/cpp         # Citas del calendario
 │   └── historialservicio.h/cpp  # Historial de servicios
-├── dialogs/
-│   ├── clientedialog.*          # Diálogo para gestión de clientes
-│   ├── vehiculodialog.*         # Diálogo para vehículos
-│   ├── repuestodialog.*         # Diálogo para repuestos
-│   ├── ordentrabajodialog.*     # Diálogo para órdenes de trabajo
-│   ├── citadialog.*             # Diálogo para citas
-│   ├── facturadialog.*          # Diálogo para facturas
-│   └── presupuestodialog.*      # Diálogo para presupuestos
-├── images/
+├── ventanas/
+│   ├── clientedialog.*          # Ventana para gestión de clientes
+│   ├── vehiculodialog.*         # Ventana para vehículos
+│   ├── repuestodialog.*         # Ventana para repuestos
+│   ├── ordentrabajodialog.*     # Ventana para órdenes de trabajo
+│   ├── citadialog.*             # Ventana para citas
+│   ├── facturadialog.*          # Ventana para facturas
+│   └── presupuestodialog.*      # Ventana para presupuestos
+├── imagenes/
 │   ├── Logo.png                 # Logo de la aplicación
 │   └── icon.ico                 # Icono para Windows
 └── build/
