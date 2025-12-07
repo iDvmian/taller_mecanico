@@ -17,13 +17,14 @@ Sistema completo de gestión de taller mecánico con interfaz gráfica Qt y base
 - [Requisitos](#️-requisitos)
 - [Inicio Rápido](#-inicio-rápido)
 - [Compilación](#-compilación)
-- [Base de Datos](#-esquema-de-base-de-datos)
+- [Base de Datos](#-esquema-de-base-de-datos) → [Diagrama Completo](DIAGRAMA_BD.md)
 - [Interfaz de Usuario](#-interfaz-de-usuario)
 - [Guía de Uso](#-guía-de-uso)
 - [Características Técnicas](#-características-técnicas)
 - [Solución de Problemas](#️-solución-de-problemas)
 - [Capturas de Pantalla](#-capturas-de-pantalla)
 - [Conceptos Avanzados](#-conceptos-avanzados-implementados)
+- [Recursos Adicionales](#-recursos-adicionales)
 - [Mejoras Futuras](#-mejoras-futuras)
 - [Licencia](#-licencia)
 - [Contribuciones](#-contribuciones)
@@ -179,18 +180,40 @@ make
 
 ### Tablas Principales
 
-| Tabla | Descripción |
-|-------|-------------|
-| `clientes` | Datos de clientes |
-| `vehiculos` | Vehículos con FK a clientes |
-| `repuestos` | Inventario de repuestos |
-| `ordenes_trabajo` | Órdenes de trabajo |
-| `repuestos_orden` | Relación OT ↔ Repuestos |
-| `facturas` | Facturas emitidas |
-| `presupuestos` | Presupuestos |
-| `items_documento` | Items de facturas/presupuestos |
-| `citas_agenda` | Citas programadas |
-| `historial_servicios` | Historial de cada vehículo |
+| Tabla | Descripción | Relaciones |
+|-------|-------------|------------|
+| `clientes` | Datos de clientes | → vehiculos, ordenes, facturas |
+| `vehiculos` | Vehículos con FK a clientes | ← clientes → ordenes, citas |
+| `repuestos` | Inventario de repuestos | → repuestos_orden |
+| `ordenes_trabajo` | Órdenes de trabajo | ← clientes, vehiculos → repuestos |
+| `repuestos_orden` | Relación OT ↔ Repuestos | ← ordenes ← repuestos |
+| `facturas` | Facturas emitidas | ← clientes, ordenes |
+| `presupuestos` | Presupuestos | ← clientes → facturas |
+| `items_documento` | Items de facturas/presupuestos | ← facturas, presupuestos |
+| `citas_agenda` | Citas programadas | ← clientes, vehiculos |
+| `historial_servicios` | Historial de cada vehículo | ← clientes, vehiculos, ordenes |
+
+### 📊 Ver Diagramas Completos
+
+**Disponibles en dos formatos:**
+
+1️⃣ **[DIAGRAMA_BD.md](DIAGRAMA_BD.md)** - Documentación técnica completa
+   - 🔗 Diagrama ER en formato Mermaid (interactivo)
+   - 📋 Especificación detallada de cada tabla (10 tablas)
+   - 🔐 Integridad referencial y restricciones
+   - 📈 Consultas SQL comunes listas para usar
+   - 🔄 Estrategias de backup y mantenimiento
+
+2️⃣ **[DIAGRAMA_BD_VISUAL.md](DIAGRAMA_BD_VISUAL.md)** - Versión visual ASCII
+   - 📊 Diagrama visual en formato de texto (ASCII art)
+   - 🎨 Fácil visualización sin extensiones
+   - 🔄 Flujo de trabajo típico ilustrado
+   - 📋 Tabla de estados y códigos
+   - 💡 Ejemplo práctico de uso
+
+**Cómo visualizar:**
+- **Mermaid**: Abre `DIAGRAMA_BD.md` y presiona `Ctrl+Shift+V` (Vista previa Markdown)
+- **ASCII**: Abre `DIAGRAMA_BD_VISUAL.md` directamente en cualquier editor
 
 ## 🎨 Interfaz de Usuario
 
@@ -449,9 +472,12 @@ La aplicación cuenta con una interfaz moderna y profesional:
 
 ## 📚 Recursos Adicionales
 
-- **DIAGRAMA_ARQUITECTURA.md**: Diagrama UML completo del sistema
-- **RESUMEN_PROYECTO.md**: Resumen ejecutivo y decisiones de diseño
-- **Comentarios en código**: Documentación inline en headers
+- **[DIAGRAMA_ARQUITECTURA.md](DIAGRAMA_ARQUITECTURA.md)**: Diagrama UML completo del sistema
+- **[DIAGRAMA_BD.md](DIAGRAMA_BD.md)**: Esquema técnico completo de base de datos (Mermaid + SQL)
+- **[DIAGRAMA_BD_VISUAL.md](DIAGRAMA_BD_VISUAL.md)**: Diagrama visual ASCII de base de datos
+- **[RELACIONES_BD.md](RELACIONES_BD.md)**: Guía completa de relaciones entre tablas ⭐
+- **[RESUMEN_PROYECTO.md](RESUMEN_PROYECTO.md)**: Resumen ejecutivo y decisiones de diseño
+- **Comentarios en código**: Documentación inline en headers y archivos .cpp
 
 ## 👨‍💻 Autor
 
@@ -469,6 +495,8 @@ Proyecto desarrollado para la asignatura de **Programación Orientada a Objetos*
 ## 🚀 Mejoras Futuras
 
 ### Funcionalidades Planificadas
+- [ ] **Asignación de Mecánicos**: Campo preparado en BD (`mecanico_asignado`)
+- [ ] **Recordatorios de Citas**: Campo preparado en BD (`recordatorio_enviado`)
 - [ ] **Reportes PDF**: Exportar facturas y reportes a PDF
 - [ ] **Gráficos estadísticos**: Charts con Qt Charts module
 - [ ] **Backup automático**: Copias de seguridad programadas de la BD
