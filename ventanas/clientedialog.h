@@ -2,7 +2,7 @@
 #define CLIENTEDIALOG_H
 
 #include <QDialog>
-#include "../models/cliente.h"
+#include "../clases/cliente.h"
 
 namespace Ui {
 class ClienteDialog;

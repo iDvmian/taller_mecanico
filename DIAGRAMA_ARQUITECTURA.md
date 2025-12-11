@@ -196,7 +196,7 @@ POOOO/
 ├── TallerMecanico.pro                # Archivo de proyecto Qt
 ├── resources.qrc                     # Recursos (imágenes)
 │
-├── models/                           # CAPA DE MODELO
+├── clases/                           # CAPA DE MODELO
 │   ├── vehiculo.h/cpp                # Clase abstracta base
 │   ├── auto.h/cpp                    # Herencia simple
 │   ├── moto.h/cpp                    # Herencia simple

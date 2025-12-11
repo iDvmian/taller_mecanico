@@ -2,9 +2,9 @@
 #define VEHICULODIALOG_H
 
 #include <QDialog>
-#include "../models/auto.h"
-#include "../models/moto.h"
-#include "../models/autohibrido.h"
+#include "../clases/auto.h"
+#include "../clases/moto.h"
+#include "../clases/autohibrido.h"
 
 namespace Ui {
 class VehiculoDialog;

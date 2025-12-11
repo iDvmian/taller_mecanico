@@ -9,8 +9,8 @@
 #include <QSpinBox>
 #include <QPushButton>
 
-#include "../models/citaagenda.h"
-#include "../models/cliente.h"
+#include "../clases/citaagenda.h"
+#include "../clases/cliente.h"
 
 class CitaDialog : public QDialog {
     Q_OBJECT

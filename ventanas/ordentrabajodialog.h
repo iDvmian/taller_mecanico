@@ -11,10 +11,10 @@
 #include <QPushButton>
 #include <QLabel>
 
-#include "../models/ordentrabajo.h"
-#include "../models/cliente.h"
-#include "../models/vehiculo.h"
-#include "../models/repuesto.h"
+#include "../clases/ordentrabajo.h"
+#include "../clases/cliente.h"
+#include "../clases/vehiculo.h"
+#include "../clases/repuesto.h"
 
 class OrdenTrabajoDialog : public QDialog {
     Q_OBJECT

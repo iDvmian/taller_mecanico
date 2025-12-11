@@ -11,7 +11,7 @@
 #include <QTableWidget>
 #include <QPushButton>
 #include <QLabel>
-#include "../models/documento.h"
+#include "../clases/documento.h"
 #include "../database/databasemanager.h"
 
 class PresupuestoDialog : public QDialog {

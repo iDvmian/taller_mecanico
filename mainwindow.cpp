@@ -63,15 +63,16 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::setupUI() {
-    setWindowTitle("Taller San Juan");
+    setWindowTitle("Taller Mecanico");
     setMinimumSize(1200, 800);
     resize(1400, 900);
 
     // Cargar logo
-    QPixmap logo(":/images/Logo.png");
+    // Cargar logo desde el recurso (ruta definida en resources.qrc)
+    QPixmap logo(":/imagenes/Logo.png");
     if (!logo.isNull()) {
         ui->logoLabel->setPixmap(logo.scaled(60, 60, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-        setWindowIcon(QIcon(":/images/Logo.png"));
+        setWindowIcon(QIcon(":/imagenes/Logo.png"));
     } else {
         // Si no hay logo, mostrar un icono por defecto
         ui->logoLabel->setText("");

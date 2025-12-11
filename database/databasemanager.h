@@ -10,16 +10,16 @@
 #include <memory>
 #include <stdexcept>
 
-#include "../models/cliente.h"
-#include "../models/vehiculo.h"
-#include "../models/auto.h"
-#include "../models/moto.h"
-#include "../models/autohibrido.h"
-#include "../models/repuesto.h"
-#include "../models/ordentrabajo.h"
-#include "../models/documento.h"
-#include "../models/citaagenda.h"
-#include "../models/historialservicio.h"
+#include "../clases/cliente.h"
+#include "../clases/vehiculo.h"
+#include "../clases/auto.h"
+#include "../clases/moto.h"
+#include "../clases/autohibrido.h"
+#include "../clases/repuesto.h"
+#include "../clases/ordentrabajo.h"
+#include "../clases/documento.h"
+#include "../clases/citaagenda.h"
+#include "../clases/historialservicio.h"
 
 // ==========================================
 // EXCEPCIONES PERSONALIZADAS
@@ -144,6 +144,10 @@ public:
 
     // Utilidades
     QString getLastError() const;
+    
+    // Datos de ejemplo (para pruebas y demostración)
+    void cargarDatosEjemplo();
+    bool baseDeDatosVacia() const;
 };
 
 #endif // DATABASEMANAGER_H

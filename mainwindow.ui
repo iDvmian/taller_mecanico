@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Taller Mecánico - Sistema de Gestión</string>
+   <string>Taller Mecanico</string>
   </property>
   <property name="styleSheet">
    <string notr="true">
@@ -518,14 +518,14 @@ QMessageBox QPushButton:hover {
         <item>
          <widget class="QLabel" name="titleLabel">
           <property name="text">
-           <string>TALLER SAN JAUN</string>
+           <string>Taller Mecanico</string>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QLabel" name="subtitleLabel">
           <property name="text">
-           <string>Sistema de Gestión Integral - Clientes, Vehículos, Órdenes de Trabajo e Inventario</string>
+           <string>Sistema de Gestión</string>
           </property>
          </widget>
         </item>

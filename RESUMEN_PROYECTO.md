@@ -355,7 +355,7 @@ POOOO/
 ├── mainwindow.h/cpp/ui
 ├── TallerMecanico.pro
 ├── resources.qrc
-├── models/
+├── clases/
 │   ├── vehiculo.h/cpp
 │   ├── auto.h/cpp
 │   ├── moto.h/cpp

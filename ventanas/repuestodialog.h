@@ -11,7 +11,7 @@
 #include <QFormLayout>
 #include <QMessageBox>
 
-#include "../models/repuesto.h"
+#include "../clases/repuesto.h"
 
 class RepuestoDialog : public QDialog {
     Q_OBJECT
